@@ -1,24 +1,26 @@
 // from data.js
 var tableData = data;
-var tbody = d3.select("tbody");
-var button = d3.select("#b#filter-btn");
-var form = d3.select("#form");
+tbody = d3.select("tbody");
 
-button.on("click", runEnter);
-form.on("submit", runEnter);
+function displayData(data){
+    tbody.text("")
+    data.forEach(function(sighting){
+    row = tbody.append("tr")
+    Object.entries(sighting).forEach(function([key, value]){
+        newTable = row.append("td").text(value)
+    })
+})}
 
-function runEnter(){
-      d3.event.preventDefault();
-      inputElement = d3.select("#ufo-form-input");
-      inputValue = inputElement.property("value");
-      tbody.html('');
+displayData(tableData);
 
-      var results = sightings.filter(sighting => sighting.datetime == inputvalue);
-      results.forEach((tabledata) => {
-          var row = tbody.append("tr");
-          Object.entries(tabledata).forEach(([key, value]) => {
-              var cell = row.append("td");
-              cell.text(value);
-          });
-      });
+var inputDate = d3.select("#datetime");
+var button = d3.select("filter-btn");
+
+function clickSelect(){
+    d3.event.preventDefault();
+    console.log(inputDate.property("value"));
+    var addedTable = tableData.filter(sighting=>sighting.datetime===inputDate.property("value"))
+    displayData(addedTable);
 }
+
+inputDate.on("change", clickSelect);
